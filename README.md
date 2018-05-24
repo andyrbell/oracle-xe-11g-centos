@@ -4,6 +4,7 @@ docker-oracle-xe-11g-centos
 Oracle Express Edition 11g Release 2 on CentOS 7
 
 Based on [wnameless/docker-oracle-xe-11g](https://github.com/wnameless/docker-oracle-xe-11g) which is built on Ubuntu.
+The key difference is that this image does not run as root and instead uses the oracle (uid=1000) user. The intention is to allow the container to run in Openshift without the need for root.
 
 ## Installation
 ```
