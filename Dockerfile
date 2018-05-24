@@ -9,4 +9,4 @@ EXPOSE 8080
 
 USER 1000
 
-CMD /usr/sbin/runAsOracle.sh /usr/sbin/startup.sh && tail -f /dev/null
+CMD /usr/sbin/startup.sh && tail -f /dev/null
