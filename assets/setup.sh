@@ -25,6 +25,11 @@ echo '. /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh' >> /etc/bashrc &&
 # Install startup script for container
 mv /assets/startup.sh /usr/sbin/startup.sh &&
 chmod +x /usr/sbin/startup.sh &&
+mv /assets/runAsOracle.sh /usr/sbin/runAsOracle.sh &&
+chmod +x /usr/sbin/runAsOracle.sh &&
+
+# set a password for the oracle user
+echo oracle | passwd --stdin oracle
 
 # Remove installation files
 rm -rf /assets &&
