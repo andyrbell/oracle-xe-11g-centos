@@ -32,6 +32,10 @@ chown oracle. /u01/app/oracle/.bash* &&
 mv /assets/startup.sh /usr/sbin/startup.sh &&
 chmod +x /usr/sbin/startup.sh &&
 
+# Install healthcheck script
+mv /assets/healthcheck.sh /usr/sbin/healthcheck.sh &&
+chmod +x /usr/sbin/healthcheck.sh &&
+
 # Remove installation files
 rm -rf /assets &&
 yum clean all &&
