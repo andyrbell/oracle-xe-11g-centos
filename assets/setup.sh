@@ -22,7 +22,7 @@ sed -i "s/xsetroot/#xsetroot/g" ${ORACLE_HOME}/config/scripts/stopdb.sh
 
 printf 8080\\n1521\\noracle\\noracle\\ny\\n | /etc/init.d/oracle-xe configure &&
 
-echo '. ${ORACLE_HOME}/bin/oracle_env.sh' >> /etc/bashrc &&
+echo ". ${ORACLE_HOME}/bin/oracle_env.sh" >> /etc/bashrc &&
 
 # copy bash initialisation scripts to the oracle user's home dir
 cp /etc/skel/.bash* /u01/app/oracle &&
