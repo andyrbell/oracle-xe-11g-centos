@@ -1,0 +1,119 @@
+apiVersion: v1
+kind: Template
+metadata:
+  annotations:
+    description: Oracle Express Edition 11g Release 2 on CentOS 7 running as oracle (uid=1000), not root 
+  name: oracle-xe-11g-centos-template
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: oracle-xe-11g-centos
+    name: oracle-xe-11g-centos
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - name: "7.4"
+      from:
+        kind: DockerImage
+        name: andyrbell/oracle-xe-11g-centos:7.4
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: oracle-xe-11g-centos
+    name: oracle-xe-11g-centos
+  spec:
+    replicas: 1
+    selector:
+      app: oracle-xe-11g-centos
+      deploymentconfig: oracle-xe-11g-centos
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: oracle-xe-11g-centos
+          deploymentconfig: oracle-xe-11g-centos
+      spec:
+        containers:
+        - image: andyrbell/oracle-xe-11g-centos:7.4
+          imagePullPolicy: IfNotPresent
+          name: oracle-xe-11g-centos
+          ports:
+          - containerPort: 1521
+            protocol: TCP
+          - containerPort: 8080
+            protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - /usr/sbin/healthcheck.sh
+            failureThreshold: 3
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: oracle-xe-11g-centos
+          readinessProbe:
+            exec:
+              command:
+                - /usr/sbin/healthcheck.sh
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          runAsUser: 1000
+        serviceAccount: nonroot
+        serviceAccountName: nonroot
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - oracle-xe-11g-centos
+        from:
+          kind: ImageStreamTag
+          name: oracle-xe-11g-centos:7.4
+          namespace: myproject
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: oracle-xe-11g-centos
+    name: oracle-xe-11g-centos
+  spec:
+    ports:
+    - name: 1521-tcp
+      port: 1521
+      protocol: TCP
+      targetPort: 1521
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentconfig: oracle-xe-11g-centos
+    sessionAffinity: None
+    type: ClusterIP
