@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh
+
 ${ORACLE_HOME}/config/scripts/startdb.sh
 
 if [ "$ORACLE_ENABLE_XDB" = true ]; then

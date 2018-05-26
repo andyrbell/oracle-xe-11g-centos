@@ -6,7 +6,7 @@ cat /assets/oracle-xe-11.2.0-1.0.x86_64.rpm.parta* > /assets/oracle-xe-11.2.0-1.
 
 yum install -y /assets/oracle-xe-11.2.0-1.0.x86_64.rpm &&
 
-. ${ORACLE_HOME}/bin/oracle_env.sh
+. /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh
 
 mv /assets/init.ora ${ORACLE_HOME}/config/scripts &&
 mv /assets/initXETemp.ora ${ORACLE_HOME}/config/scripts &&
