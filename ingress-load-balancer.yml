@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-oracle
+spec:
+  ports:
+  - name: 1521-tcp
+    port: 1521
+  loadBalancerIP: 172.29.0.1
+  type: LoadBalancer
+  selector:
+    deploymentconfig: oracle-xe-11g-centos
+

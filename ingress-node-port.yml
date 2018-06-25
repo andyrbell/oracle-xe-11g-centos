@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-oracle-node-port
+  labels:
+    name: ingress-oracle-node-port
+spec:
+  type: NodePort
+  ports:
+    - port: 1521
+      nodePort: 31521
+      name: 1521-tcp
+  selector:
+    deploymentconfig: oracle-xe-11g-centos
